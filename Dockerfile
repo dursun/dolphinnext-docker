@@ -3,7 +3,7 @@ MAINTAINER Alper Kucukural <alper.kucukural@umassmed.edu>
 RUN echo "start"
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get dist-upgrade
+RUN apt-get -y dist-upgrade
  
 # Install apache, PHP, and supplimentary programs. curl and lynx-cur are for debugging the container.
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
@@ -20,7 +20,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
 RUN apt-get clean
 RUN pip install simple-crypt mysql-connector
 RUN add-apt-repository -y ppa:opencpu/opencpu-2.1
-RUN LC_ALL=C.UTF-8 apt-add-repository ppa:ondrej/php
+RUN LC_ALL=C.UTF-8 apt-add-repository ppa:jason.grammenos.agility/php
 RUN apt-get update
 RUN apt-get -y install php7.2 ssh openssh-server \
     php-pear php7.2-curl php7.2-dev php7.2-gd php7.2-mbstring php7.2-zip php7.2-mysql \ 
@@ -53,7 +53,7 @@ RUN echo "dpkg-reconfigure locales"
 
 RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \ 
     service apache2 start && \
-    DEBIAN_FRONTEND=noninteractive apt-get -y install phpmyadmin php-mbstring php-gettext && \ 
+    DEBIAN_FRONTEND=noninteractive apt-get -y install phpmyadmin php7.2-mbstring  php-gettext && \ 
     zcat /usr/share/doc/phpmyadmin/examples/create_tables.sql.gz|mysql -uroot
 
 RUN usermod -d /var/lib/mysql/ mysql
@@ -103,7 +103,7 @@ RUN export VERSION=1.13 OS=linux ARCH=amd64 && \
     tar -C /usr/local -xzvf go$VERSION.$OS-$ARCH.tar.gz && \
     rm go$VERSION.$OS-$ARCH.tar.gz && \
     export PATH=$PATH:/usr/local/go/bin && \
-    export VERSION=3.6.4 && \
+    export VERSION=3.7.4 && \
     wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-${VERSION}.tar.gz && \
     tar -xzf singularity-${VERSION}.tar.gz && \
     cd singularity && ./mconfig && make -C ./builddir && make -C ./builddir install
@@ -112,10 +112,8 @@ ADD bin /usr/local/bin
 
 
 # Downloading gcloud package
-RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz
-RUN mkdir -p /usr/local/gcloud \
-  && tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz \
-  && /usr/local/gcloud/google-cloud-sdk/install.sh
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - && apt-get update -y && apt-get install google-cloud-sdk -y
+      
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
 
 RUN echo "DONE!"
