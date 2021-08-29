@@ -35,7 +35,7 @@ PUBWEB_URL = http://localhost:8080/dolphinnext/tmp/pub
 OCPU_URL = http://localhost
 DEBROWSER_URL = http://localhost
 OCPU_PUBWEB_URL = http://localhost/dolphinnext/tmp/pub
-NEXTFLOW_VERSION = 19.10.0
+NEXTFLOW_VERSION = 21.04.0
 LDAP_SERVER=test
 DN_STRING=test
 BIND_USER= SVCLinuxLDAPAuth
@@ -45,6 +45,7 @@ EMAIL_ADMIN=test@test.edu
 
 [UICONFIG]
 COMPANY_NAME=Test Server
+PASSWORD_LOGIN=true
 ALLOW_SIGNUP=true
 ALLOW_SIGNUPGOOGLE=true
 ; User Preferences for profile page 
@@ -63,6 +64,7 @@ SHOW_RUN_TRACE=true
 SHOW_RUN_NEXTFLOWLOG=true  
 SHOW_RUN_NEXTFLOWNF=true
 SHOW_RUN_NEXTFLOWCONFIG=true
+SHOW_HOMEPAGE=false
 
 ; Wizard Settings
 SHOW_WIZARD=true
@@ -70,4 +72,15 @@ SHOW_WIZARD=true
 ; Use shared group id to define TEST_PROFILE_GROUP_ID.
 ;SHOW_TEST_PROFILE=true
 ;TEST_PROFILE_GROUP_ID=18
+
+; The Okta SSO Authorization server's Config
+[OKTACONFIG]
+SSO_LOGIN=false
+; Client credentials. Retrieved from OKTA Auth Server
+CLIENT_ID=test
+CLIENT_SECRET=test
+ISSUER=https://{yourOktaDomain}.com/oauth2/{authServerId}
+; OKTA api token for session delete on signout
+OKTA_API_TOKEN=test
+
 
