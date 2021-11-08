@@ -90,7 +90,7 @@ RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start && \
     cat /var/www/html/dolphinnext/db/dolphinnext.sql|mysql -uroot dolphinnext && \
     python /var/www/html/dolphinnext/scripts/updateDN.py
 
-RUN cd /usr/local/share && wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/edirect.tar.gz && \
+RUN cd /usr/local/share && wget https://ftp.ncbi.nlm.nih.gov/entrez/entrezdirect/versions/9.90.20180925/edirect.tar.gz && \
     tar xvfz edirect.tar.gz && \
     rm edirect.tar.gz && \
     cd edirect && ./setup.sh
