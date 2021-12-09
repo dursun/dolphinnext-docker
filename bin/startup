@@ -27,4 +27,5 @@ apache2 -D FOREGROUND &
 
 #start cron service
 crontab /usr/local/bin/dolphinnext-cron
-service cron start 
+service cron start
+cd /var/www/html/test-script && npm start &

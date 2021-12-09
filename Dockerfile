@@ -16,7 +16,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 \
                     mercurial subversion libarchive-dev uuid-dev squashfs-tools build-essential \
                     libgpgme11-dev libseccomp-dev pkg-config 
 
-
 RUN apt-get clean
 RUN pip install simple-crypt mysql-connector
 RUN add-apt-repository -y ppa:opencpu/opencpu-2.1
@@ -80,7 +79,7 @@ RUN mv phpunit-7.0.2.phar /usr/local/bin/phpunit
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-ENV GITUSER=UMMS-Biocore
+ENV GITUSER=dursun
 RUN git clone https://github.com/${GITUSER}/dolphinnext.git /var/www/html/dolphinnext
 
 RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/dolphinnext
@@ -115,6 +114,17 @@ ADD bin /usr/local/bin
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - && apt-get update -y && apt-get install google-cloud-sdk -y
       
 ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+
+# Install nodejs stable via HTTPS
+RUN apt-get install -y apt-transport-https ca-certificates
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+RUN apt-get install -y nodejs
+
+# Install test-script project
+RUN git clone https://github.com/dursun/test-script.git /var/www/html/test-script
+WORKDIR /var/www/html/test-script
+RUN npm install
+EXPOSE 3000
 
 RUN echo "DONE!"
 
