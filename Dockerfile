@@ -80,7 +80,7 @@ RUN mv phpunit-7.0.2.phar /usr/local/bin/phpunit
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-ENV GITUSER=UMMS-Biocore
+ENV GITUSER=dursun
 RUN git clone https://github.com/${GITUSER}/dolphinnext.git /var/www/html/dolphinnext
 
 RUN chown -R ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /var/www/html/dolphinnext
